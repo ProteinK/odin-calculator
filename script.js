@@ -45,8 +45,14 @@ function clear(e) {
 }
 
 const evaluateInputs = () => {
+  if (inputs[1] === '/' && inputs[2] === 0) {
+    inputs = [];
+    return 'ERR: Division by 0';
+  }
+
   let result = operate(inputs[0], inputs[1], inputs[2]);
   inputs = [result];
+  return result;
 }
 
 const updateDisplay = token => {
@@ -80,9 +86,9 @@ function inputOperator(e) {
   }
 
   if (operator === '=' || inputs.length === 3) {
-    evaluateInputs();
+    let result = evaluateInputs();
     clearScreen();
-    updateDisplay(inputs[0]);
+    updateDisplay(result);
   }
 
   if (operator !== '=') {

@@ -31,11 +31,24 @@ const operate = (a, operator, b) => {
 
 const display = document.querySelector('.display');
 
-function clear(e) {
+let currentInput = '';
+let inputs = [];
+
+const clearScreen = () => {
+  currentInput = '';
   display.textContent = 0;
 }
 
-const addToDisplay = token => {
+function clear(e) {
+  clearScreen();
+}
+
+const evaluateInputs = () => {
+  let result = operate(inputs[0], inputs[1], inputs[2]);
+  inputs = [result];
+}
+
+const updateDisplay = token => {
   if (display.textContent.startsWith('0')) {
     display.textContent = token;
   } else {
@@ -43,8 +56,31 @@ const addToDisplay = token => {
   }
 };
 
-function buttonClicked(e) {
-  addToDisplay(this.textContent);
+function inputNumber(e) {
+  if (!currentInput) {
+    clearScreen();
+  }
+  currentInput += this.textContent;
+  updateDisplay(this.textContent);
+}
+
+function inputOperator(e) {
+  let operator = this.textContent;
+
+  if (currentInput !== '') {
+    inputs.push(Number(currentInput));
+  }
+
+  if (operator === '=' || inputs.length === 3) {
+    evaluateInputs();
+    clearScreen();
+    updateDisplay(inputs[0]);
+  }
+
+  if (operator !== '=') {
+    inputs.push(operator);
+  }
+  currentInput = '';
 }
 
 const clearButton = document.querySelector('#clear');
@@ -57,7 +93,7 @@ for (let i = 1; i <= 9; i++) {
   let btn = document.createElement('button');
   btn.id = `button${i}`;
   btn.textContent = i;
-  btn.addEventListener('click', buttonClicked);
+  btn.addEventListener('click', inputNumber);
   buttons.appendChild(btn);
 }
 
@@ -65,5 +101,11 @@ for (let i = 1; i <= 9; i++) {
 let btn = document.createElement('button');
 btn.id = 'button0';
 btn.textContent = 0;
-btn.addEventListener('click', buttonClicked);
+btn.addEventListener('click', inputNumber);
 buttons.appendChild(btn);
+
+// Add operator event handlers
+const operators = document.querySelectorAll('.operators');
+operators.forEach(o => {
+  o.addEventListener('click', inputOperator);
+});

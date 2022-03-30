@@ -35,11 +35,12 @@ let currentInput = '';
 let inputs = [];
 
 const clearScreen = () => {
-  currentInput = '';
   display.textContent = 0;
 }
 
 function clear(e) {
+  currentInput = '';
+  inputs = [];
   clearScreen();
 }
 
@@ -66,6 +67,13 @@ function inputNumber(e) {
 
 function inputOperator(e) {
   let operator = this.textContent;
+
+  if (operator === '=' && inputs.length !== 2) {
+    clearScreen();
+    updateDisplay('ERR');
+    currentInput = '';
+    return;
+  }
 
   if (currentInput !== '') {
     inputs.push(Number(currentInput));

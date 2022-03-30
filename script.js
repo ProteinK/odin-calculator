@@ -25,7 +25,7 @@ const operate = (a, operator, b) => {
     return multiply(a, b);
   }
   if (operator === '/') {
-    return divide(a, b);
+    return parseFloat(divide(a, b).toFixed(7));
   }
 }
 

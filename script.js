@@ -47,6 +47,18 @@ function clear(e) {
   clearScreen();
 }
 
+function inputBackspace(e) {
+  if (currentInput !== '') {
+    currentInput = currentInput.substring(0, currentInput.length - 1);
+    if (currentInput) {
+      display.textContent = currentInput;
+    }
+    else {
+      display.textContent = 0;
+    }
+  }
+}
+
 const evaluateInputs = () => {
   if (inputs[1] === '/' && inputs[2] === 0) {
     inputs = [];
@@ -130,6 +142,13 @@ decimalButton.id = 'decimal';
 decimalButton.textContent = '.';
 decimalButton.addEventListener('click', inputNumber);
 buttons.appendChild(decimalButton);
+
+// Add backspace button
+let backspace = document.createElement('button');
+backspace.id = 'backspace';
+backspace.textContent = '⟵';
+backspace.addEventListener('click', inputBackspace);
+buttons.appendChild(backspace);
 
 // Add operator event handlers
 const operators = document.querySelectorAll('.operators');

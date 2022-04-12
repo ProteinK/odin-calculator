@@ -10,6 +10,7 @@
     width: 600px;
     text-align: end;
     font-size: 50px;
+    box-shadow: 2px 2px 1px gray;
 }
 
 .buttons {
@@ -22,6 +23,7 @@
     font-size: 25px;
     min-width: 200px;
     padding: 25px;
+    border-radius: 15px;
 }
 
 .buttons #button0 {
@@ -31,14 +33,17 @@
 .buttons #equals {
     min-width: 400px;
     margin-bottom: 10px;
+    background-color: aqua;
 }
 
 .buttons #clear {
     min-width: 200px;
     margin-bottom: 10px;
+    background-color: aqua;
 }
 
 #add, #subtract, #multiply, #divide {
     min-width: 150px;
     margin-bottom: 10px;
+    background-color: aqua;
 }

@@ -25,17 +25,20 @@ const operate = (a, operator, b) => {
     return multiply(a, b);
   }
   if (operator === '/') {
-    return parseFloat(divide(a, b).toFixed(7));
+    return divide(a, b);
   }
 }
 
 const display = document.querySelector('.display');
+
+let decimalButton;
 
 let currentInput = '';
 let inputs = [];
 
 const clearScreen = () => {
   display.textContent = 0;
+  decimalButton.disabled = false;
 }
 
 function clear(e) {
@@ -50,7 +53,7 @@ const evaluateInputs = () => {
     return 'ERR: Division by 0';
   }
 
-  let result = operate(inputs[0], inputs[1], inputs[2]);
+  let result = parseFloat(operate(inputs[0], inputs[1], inputs[2]).toFixed(7));
   inputs = [result];
   return result;
 }
@@ -66,6 +69,9 @@ const updateDisplay = token => {
 function inputNumber(e) {
   if (!currentInput) {
     clearScreen();
+  }
+  if (this.textContent === '.') {
+    this.disabled = true;
   }
   currentInput += this.textContent;
   updateDisplay(this.textContent);
@@ -117,6 +123,13 @@ btn.id = 'button0';
 btn.textContent = 0;
 btn.addEventListener('click', inputNumber);
 buttons.appendChild(btn);
+
+// Add decimal button
+decimalButton = document.createElement('button');
+decimalButton.id = 'decimal';
+decimalButton.textContent = '.';
+decimalButton.addEventListener('click', inputNumber);
+buttons.appendChild(decimalButton);
 
 // Add operator event handlers
 const operators = document.querySelectorAll('.operators');

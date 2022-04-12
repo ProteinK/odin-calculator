@@ -31,6 +31,7 @@ const operate = (a, operator, b) => {
 
 const display = document.querySelector('.display');
 
+
 let decimalButton;
 
 let currentInput = '';
@@ -89,9 +90,11 @@ function inputNumber(e) {
   updateDisplay(this.textContent);
 }
 
-function inputOperator(e) {
-  let operator = this.textContent;
+function inputOperatorHandler(e) {
+  inputOperator(this.textContent);
+}
 
+const inputOperator = operator => {
   if (operator === '=' && inputs.length !== 2) {
     clearScreen();
     updateDisplay('ERR');
@@ -113,7 +116,29 @@ function inputOperator(e) {
     inputs.push(operator);
   }
   currentInput = '';
+};
+
+function keyDown(e) {
+  const acceptableInputs = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
+  const operators = ['+', '-', '/', '*', '='];
+
+  if (acceptableInputs.includes(e.key)) {
+    if (!currentInput) {
+      clearScreen();
+    }
+    if (e.key === '.') {
+      decimalButton.disabled = true;
+    }
+    currentInput += e.key;
+    updateDisplay(e.key);
+  } else if (operators.includes(e.key)) {
+    inputOperator(e.key);
+  } else if (e.key === 'Backspace') {
+    inputBackspace();
+  }
 }
+
+document.addEventListener('keydown', keyDown);
 
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', clear);
@@ -153,5 +178,5 @@ buttons.appendChild(backspace);
 // Add operator event handlers
 const operators = document.querySelectorAll('.operators');
 operators.forEach(o => {
-  o.addEventListener('click', inputOperator);
+  o.addEventListener('click', inputOperatorHandler);
 });
